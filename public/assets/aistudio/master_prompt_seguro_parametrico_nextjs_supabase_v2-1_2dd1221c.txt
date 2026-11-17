@@ -1,0 +1,1411 @@
+# MASTER PROMPT — AGRICULTURAL PARAMETRIC INSURANCE PLATFORM
+
+## 1. PROJECT OVERVIEW
+
+Build a complete, functional MVP of a modern **Agricultural Parametric Insurance Platform** designed for the Angolan insurance market.
+
+The platform must allow small and medium-sized farmers to access agricultural insurance against climate risks, particularly:
+- Drought.
+- Excessive rainfall.
+
+The system must use measurable, externally verifiable meteorological data to evaluate climate events, calculate insurance premiums, determine policy triggers and calculate indemnity payments automatically.
+
+The platform must be designed as a real insurance management system, not just a visual prototype.
+
+**Core principle:** Every important operation must be executable, traceable, explainable and auditable.
+
+Build the entire application using Next.js, TypeScript and Supabase, with all business logic implemented through secure APIs inside the Next.js application.
+
+---
+
+## 2. TECHNOLOGY STACK
+
+### Frontend
+- Next.js (latest stable version).
+- App Router.
+- TypeScript.
+- Tailwind CSS.
+- shadcn/ui for selected interface components.
+- Lucide React for icons.
+- Recharts for charts and data visualization.
+- React Hook Form.
+- Zod for validation.
+
+### Backend
+- Next.js Route Handlers (`app/api/**/route.ts`).
+- TypeScript.
+- Server-side business logic.
+- Supabase JavaScript SDK.
+- Zod for API validation.
+
+### Database and infrastructure
+- Supabase PostgreSQL.
+- Supabase Auth.
+- Supabase Row Level Security (RLS).
+- Supabase Storage when necessary.
+- PostGIS for geospatial operations where appropriate.
+
+### Additional libraries
+- date-fns for date management.
+- Decimal.js for accurate financial calculations.
+- TanStack Table for administrative tables.
+- React Leaflet or MapLibre for geographical visualization, where appropriate.
+
+Do not introduce unnecessary dependencies.
+
+---
+
+## 3. APPLICATION ARCHITECTURE
+
+Use a modular full-stack architecture.
+
+The frontend must never communicate directly with external climate providers or execute sensitive insurance calculations.
+
+All important operations must go through Next.js APIs.
+
+Architecture:
+
+Frontend (Next.js)
+↓
+Next.js API Routes
+↓
+Business Logic Services
+↓
+Supabase PostgreSQL / External APIs
+
+Organize the project into independent modules:
+
+1. Authentication and authorization.
+2. User and customer management.
+3. Agricultural property management.
+4. Insurance products.
+5. Insurance simulation.
+6. Risk assessment.
+7. Premium calculation.
+8. Policy management.
+9. Climate data integration.
+10. Climate monitoring.
+11. Event detection.
+12. Indemnity calculation.
+13. Payment simulation.
+14. Notifications.
+15. Audit and compliance.
+16. Administration and reporting.
+
+Use a modular monolith architecture. Avoid microservices for this MVP.
+
+---
+
+## 4. USER ROLES AND PERMISSIONS
+
+Implement three distinct user roles.
+
+### A. FARMER — CUSTOMER
+
+The farmer must have access to a personal dashboard.
+
+Features:
+- Register and authenticate.
+- Complete personal and contact information.
+- Register agricultural properties.
+- Select geographical location.
+- Register crops.
+- View available insurance products.
+- Simulate insurance coverage.
+- View estimated premiums.
+- Review insurance conditions.
+- Accept insurance conditions.
+- Simulate premium payment.
+- Receive a digital insurance policy.
+- View active and expired policies.
+- Monitor climate conditions.
+- View coverage status.
+- Receive notifications.
+- Track indemnity calculations.
+- Consult payment history.
+
+The interface must be simple enough for people with limited technical knowledge.
+
+### B. MANAGER — NOSSA INSURANCE
+
+Create an administrative dashboard for insurance managers.
+
+Features:
+- View platform statistics.
+- Manage farmers.
+- Manage agricultural properties.
+- Create and configure insurance products.
+- Configure covered crops.
+- Configure geographical coverage.
+- Define insurance periods.
+- Configure climate indicators.
+- Define trigger thresholds.
+- Configure premium calculation parameters.
+- Configure indemnity rules.
+- View all insurance policies.
+- Monitor financial exposure.
+- Monitor climate events.
+- View pending and completed payments.
+- Manage external data sources.
+- View alerts and exceptions.
+- Export reports.
+
+Managers must be able to modify insurance rules without changing source code.
+
+### C. OPERATOR — OPERATIONS
+
+Create a separate operational interface.
+
+Features:
+- View events requiring manual intervention.
+- Review incomplete or inconsistent climate data.
+- Investigate duplicate events.
+- Compare meteorological sources.
+- Inspect event evidence.
+- Review indemnity calculations.
+- Approve or reject exceptional cases.
+- Record reasons for decisions.
+- Escalate incidents.
+- Consult the audit history.
+
+Every manual decision must be recorded with the responsible user, date, reason and previous status.
+
+---
+
+## 5. USER INTERFACE AND DESIGN SYSTEM
+
+The design must be modern, minimalist, professional and clean.
+
+Take inspiration from contemporary financial technology platforms, modern SaaS products and well-designed banking applications.
+
+**Avoid excessive visual decoration.**
+
+### Design principles
+- White and neutral backgrounds.
+- Minimal use of borders.
+- No excessive shadows.
+- No unnecessary gradients.
+- No excessive green.
+- Generous whitespace.
+- Clear typography.
+- Consistent spacing.
+- Simple navigation.
+- Restrained use of accent colours.
+- Responsive layouts.
+- Professional data visualization.
+
+### Suggested palette
+- Background: #FFFFFF
+- Secondary background: #F8F9FA
+- Primary text: #171717
+- Secondary text: #737373
+- Primary accent: #2563EB
+- Success: #16A34A
+- Warning: #D97706
+- Error: #DC2626
+- Borders: #E5E7EB
+
+Green should only appear where it communicates agricultural identity, positive status or successful operations.
+
+### Components
+Use simple components:
+- Sidebar navigation.
+- Compact top navigation.
+- Minimal cards.
+- Data tables.
+- Simple forms.
+- Dialogs and drawers.
+- Status indicators.
+- Charts.
+- Notification panels.
+- Search and filtering.
+- Pagination.
+
+Do not put every element inside a card.
+
+Avoid unnecessary borders around every section.
+
+### Responsive design
+The farmer portal must work especially well on mobile devices.
+
+The administrative interfaces should support desktop and tablet screens.
+
+Use appropriate loading states, empty states, success messages and error messages.
+
+---
+
+## 6. APPLICATION PAGES
+
+### A. Public pages
+
+Create:
+- `/` — Landing page.
+- `/products` — Insurance products.
+- `/how-it-works` — Explanation of parametric insurance.
+- `/login` — Authentication.
+- `/register` — Registration.
+- `/terms` — Insurance terms.
+- `/privacy` — Privacy policy.
+
+The landing page must explain the value of agricultural parametric insurance without overwhelming visitors.
+
+Include a clear call to action to simulate coverage.
+
+### B. Farmer portal
+
+Base route: `/dashboard`
+
+Pages:
+- `/dashboard` — Overview.
+- `/dashboard/farms` — Agricultural properties.
+- `/dashboard/farms/new` — Register property.
+- `/dashboard/simulate` — Insurance simulator.
+- `/dashboard/policies` — Policies.
+- `/dashboard/policies/[id]` — Policy details.
+- `/dashboard/climate` — Climate monitoring.
+- `/dashboard/claims` — Indemnities and events.
+- `/dashboard/payments` — Payment history.
+- `/dashboard/notifications` — Notifications.
+- `/dashboard/profile` — Personal profile.
+
+### C. Manager portal
+
+Base route: `/admin`
+
+Pages:
+- `/admin` — Management overview.
+- `/admin/customers` — Customers.
+- `/admin/farms` — Agricultural properties.
+- `/admin/products` — Insurance products.
+- `/admin/products/new` — Create insurance product.
+- `/admin/policies` — Policy management.
+- `/admin/events` — Climate events.
+- `/admin/monitoring` — Climate monitoring.
+- `/admin/payments` — Payment operations.
+- `/admin/data-sources` — External data sources.
+- `/admin/exposure` — Financial exposure.
+- `/admin/reports` — Reports.
+- `/admin/audit` — Audit records.
+- `/admin/settings` — System configuration.
+
+### D. Operator portal
+
+Base route: `/operations`
+
+Pages:
+- `/operations` — Operational overview.
+- `/operations/exceptions` — Pending exceptions.
+- `/operations/events` — Climate event investigations.
+- `/operations/data-quality` — Data quality.
+- `/operations/approvals` — Manual decisions.
+- `/operations/audit` — Operational history.
+
+Protect every route according to the authenticated user's role.
+
+---
+
+## 7. INSURANCE SIMULATOR
+
+This is one of the most important features.
+
+Build a complete interactive insurance simulator.
+
+The farmer must be able to:
+1. Select an agricultural location.
+2. Select the crop.
+3. Select the agricultural campaign.
+4. Select insurance coverage against drought or excessive rainfall.
+5. Define the insured capital.
+6. View the climate indicator.
+7. View the coverage thresholds.
+8. View the estimated premium.
+9. View the possible indemnity.
+10. Review the insurance conditions.
+
+The simulator must retrieve product configurations from Supabase.
+
+Do not hardcode insurance products in frontend components.
+
+### Premium calculation
+
+Implement a configurable premium engine.
+
+Example:
+
+Premium = Insured Capital × Premium Rate
+
+The premium rate must be configurable according to:
+- Crop.
+- Geographical location.
+- Historical climate risk.
+- Insurance period.
+- Coverage type.
+- Risk classification.
+
+For the MVP, use configurable actuarial assumptions rather than claiming to have a validated actuarial model.
+
+Show the calculation breakdown to the user.
+
+---
+
+## 8. INSURANCE SUBSCRIPTION AND DIGITAL POLICY
+
+Implement a complete subscription flow.
+
+Steps:
+1. Customer selects a simulation.
+2. System validates eligibility.
+3. Customer reviews the coverage.
+4. Customer accepts insurance terms.
+5. Customer simulates premium payment.
+6. Backend creates the policy.
+7. System generates a unique policy number.
+8. Policy becomes active after successful simulated payment.
+9. Customer can consult and download the policy.
+
+Generate a professional PDF policy containing:
+- Insurance company identification.
+- Customer information.
+- Insured property.
+- Crop.
+- Geographical location.
+- Coverage period.
+- Insured capital.
+- Premium.
+- Climate indicator.
+- Trigger thresholds.
+- Indemnity rules.
+- Policy number.
+- Issue date.
+- Policy status.
+
+Clearly identify demonstration policies as simulated.
+
+Use server-side PDF generation.
+
+---
+
+## 9. CLIMATE DATA INTEGRATION
+
+This module is critical.
+
+Build an independent climate data integration layer.
+
+Create a provider adapter architecture.
+
+### Initial providers
+
+Implement adapters for:
+1. Open-Meteo Historical Weather API using ERA5/ERA5-Land data.
+2. NASA POWER Daily API.
+3. CHIRPS, where an accessible and documented integration is available.
+4. INAMET and GGPEN as future institutional integration adapters.
+5. Copernicus as an additional integration option.
+
+Do not invent APIs, credentials or institutional integrations.
+
+Use the actual documented API endpoints and parameters.
+
+For the MVP, prioritize at least one working external provider and a second source for comparison.
+
+### Data collected
+
+For every observation, record:
+- Provider.
+- Geographic coordinates.
+- Observation date.
+- Precipitation amount.
+- Measurement unit.
+- Retrieval timestamp.
+- Source URL or endpoint.
+- Data resolution, when available.
+- Data quality status.
+- Original response or a reproducible reference to it.
+- Data validation results.
+
+Normalize precipitation values to millimetres.
+
+### Data validation
+
+Implement validation for:
+- Missing observations.
+- Invalid values.
+- Incomplete periods.
+- Delayed data.
+- Duplicate observations.
+- Incorrect units.
+- Geographic mismatches.
+- Significant differences between sources.
+
+Never treat missing data as zero rainfall.
+
+### Source comparison
+
+Compare observations from the primary source and confirmation source.
+
+Allow configurable disagreement thresholds.
+
+When the data quality requirements are not satisfied:
+- Do not activate an automatic indemnity.
+- Create an exception.
+- Notify the operator.
+- Preserve the evidence.
+- Allow manual investigation.
+
+The system must distinguish between actual external data and simulated demonstration data.
+
+Never present mock data as real meteorological observations.
+
+---
+
+## 10. CLIMATE MONITORING ENGINE
+
+Implement a backend service responsible for monitoring active policies.
+
+The service must:
+1. Retrieve active policies.
+2. Identify their locations and insurance periods.
+3. Retrieve available precipitation observations.
+4. Validate data quality.
+5. Calculate accumulated precipitation.
+6. Compare accumulated precipitation against policy thresholds.
+7. Identify potential climate events.
+8. Record the event.
+9. Prevent duplicate event creation.
+10. Send the event for automatic processing or manual review.
+
+Implement an API endpoint for triggering monitoring.
+
+Example:
+
+`POST /api/monitoring/run`
+
+Also implement a scheduled execution strategy that can be connected to an external cron service.
+
+Do not assume that Next.js Route Handlers execute automatically on a schedule.
+
+---
+
+## 11. EVENT DETECTION AND PARAMETRIC TRIGGERS
+
+Create a configurable trigger engine.
+
+Support two initial insurance scenarios.
+
+### Scenario A: Drought
+
+The system calculates accumulated precipitation over a predefined period.
+
+If precipitation falls below the contractual threshold, the event may activate.
+
+### Scenario B: Excessive rainfall
+
+The system calculates accumulated precipitation over a predefined period.
+
+If precipitation exceeds the contractual threshold, the event may activate.
+
+The thresholds must be defined in the insurance product and copied into the policy at subscription time.
+
+Never change an existing policy's contractual parameters when a manager modifies a product.
+
+Use versioned insurance configurations.
+
+### Event lifecycle
+
+Implement the following statuses:
+- Monitoring.
+- Potential event.
+- Data validation pending.
+- Trigger activated.
+- Trigger not activated.
+- Manual review.
+- Indemnity calculated.
+- Payment pending.
+- Paid.
+- Rejected.
+- Exception.
+
+Every event must contain an explanation of the rule applied.
+
+---
+
+## 12. INDEMNITY CALCULATION ENGINE
+
+Implement a separate indemnity calculation service.
+
+Use configurable severity bands.
+
+Example:
+
+| Precipitation condition | Payout percentage |
+|---|---:|
+| Within normal range | 0% |
+| Moderate deviation | 25% |
+| Significant deviation | 50% |
+| Severe deviation | 75% |
+| Extreme deviation | 100% |
+
+These values are illustrative and must be configurable.
+
+Formula:
+
+Indemnity = Insured Capital × Payout Percentage
+
+The backend must return:
+- Insured capital.
+- Observed precipitation.
+- Contractual threshold.
+- Severity classification.
+- Applicable payout percentage.
+- Calculated indemnity.
+- Calculation explanation.
+- Source evidence.
+- Calculation timestamp.
+
+Implement validation to ensure that the indemnity never exceeds the insured capital or contractual maximum.
+
+Use Decimal.js for financial arithmetic.
+
+---
+
+## 13. PAYMENT SIMULATION
+
+Build a payment module.
+
+For the MVP, do not integrate real banking or mobile money transactions.
+
+Implement simulated operations with the following statuses:
+- Pending.
+- Processing.
+- Successful.
+- Failed.
+- Cancelled.
+
+The payment system must support:
+- Simulated premium payments.
+- Simulated indemnity payments.
+- Unique transaction references.
+- Transaction history.
+- Payment receipts.
+- Error handling.
+- Audit records.
+
+Make the architecture extensible for future integration with Angolan payment providers.
+
+A successful payment must update the corresponding operation consistently.
+
+---
+
+## 14. RISK OF BASIS AND HISTORICAL TESTING
+
+This is an essential module.
+
+Create a section for historical climate analysis and risk-of-basis testing.
+
+Implement:
+- Historical precipitation retrieval.
+- Historical trigger simulations.
+- Comparison of multiple climate sources.
+- Scenario testing.
+- False positive identification.
+- False negative identification.
+- Missing data scenarios.
+- Data disagreement scenarios.
+
+Provide an administrative interface for running simulations.
+
+Display the results through charts and tables.
+
+Explain the difference between:
+- An insurance trigger.
+- An actual agricultural loss.
+- A calculated indemnity.
+
+Never claim that a parametric trigger guarantees compensation for every real agricultural loss.
+
+Clearly document the limitations of the indicator.
+
+---
+
+## 15. AUDIT AND SECURITY
+
+Implement a complete audit system.
+
+Every important operation must generate an audit record.
+
+Examples:
+- Customer registration.
+- Farm registration.
+- Product configuration.
+- Premium calculation.
+- Policy creation.
+- Climate data retrieval.
+- Trigger activation.
+- Indemnity calculation.
+- Payment creation.
+- Manual approval.
+- Manual rejection.
+- Configuration changes.
+
+Audit records should contain:
+- User ID, when applicable.
+- Action.
+- Entity type.
+- Entity ID.
+- Timestamp.
+- Previous state, when applicable.
+- New state, when applicable.
+- Relevant metadata.
+- Operation result.
+
+Audit records must not be editable through normal application interfaces.
+
+### Security requirements
+- Use Supabase Auth.
+- Implement Row Level Security.
+- Enforce role-based authorization on the server.
+- Validate every API request.
+- Protect sensitive operations.
+- Prevent unauthorized access to other customers' policies.
+- Never expose the Supabase service role key.
+- Never store credentials in source code.
+- Use environment variables.
+- Avoid leaking sensitive information in logs.
+- Implement rate limiting on sensitive endpoints where practical.
+- Use secure error handling.
+- Protect against duplicate payment and event processing.
+
+Use database transactions and idempotency mechanisms where appropriate.
+
+---
+
+## 16. DATABASE DESIGN
+
+Create a normalized PostgreSQL database.
+
+At minimum, implement the following tables:
+
+### Identity and users
+- profiles
+- user_roles
+- customers
+
+### Agriculture
+- farms
+- farm_locations
+- crops
+- agricultural_campaigns
+
+### Insurance
+- insurance_products
+- insurance_product_versions
+- insurance_coverages
+- insurance_rules
+- insurance_simulations
+- policies
+- policy_terms
+
+### Climate
+- climate_providers
+- climate_observations
+- climate_data_imports
+- climate_data_quality_checks
+- climate_source_comparisons
+
+### Events and indemnities
+- climate_events
+- event_evidence
+- event_decisions
+- indemnity_calculations
+
+### Payments
+- payments
+- payment_transactions
+
+### Operations
+- notifications
+- audit_logs
+- system_settings
+- operational_exceptions
+
+Create appropriate:
+- Foreign keys.
+- Indexes.
+- Constraints.
+- Unique identifiers.
+- Timestamps.
+- Status fields.
+- RLS policies.
+
+Use migrations to create the schema.
+
+Do not create the database schema only through the Supabase dashboard.
+
+Include all SQL migrations in the repository.
+
+---
+
+## 17. NEXT.JS API DESIGN
+
+Create REST API endpoints grouped by functionality.
+
+### Authentication and profiles
+- `GET /api/profile`
+- `PATCH /api/profile`
+
+### Farms
+- `GET /api/farms`
+- `POST /api/farms`
+- `GET /api/farms/[id]`
+- `PATCH /api/farms/[id]`
+- `DELETE /api/farms/[id]`
+
+### Insurance products
+- `GET /api/products`
+- `POST /api/products`
+- `GET /api/products/[id]`
+- `PATCH /api/products/[id]`
+
+### Simulations
+- `POST /api/insurance/simulate`
+- `GET /api/insurance/simulations`
+
+### Policies
+- `POST /api/policies`
+- `GET /api/policies`
+- `GET /api/policies/[id]`
+- `GET /api/policies/[id]/document`
+
+### Climate
+- `GET /api/climate/observations`
+- `POST /api/climate/fetch`
+- `POST /api/climate/compare`
+- `POST /api/climate/validate`
+
+### Monitoring and events
+- `POST /api/monitoring/run`
+- `GET /api/events`
+- `GET /api/events/[id]`
+- `POST /api/events/[id]/review`
+
+### Indemnities
+- `POST /api/indemnities/calculate`
+- `GET /api/indemnities`
+
+### Payments
+- `POST /api/payments/simulate`
+- `GET /api/payments`
+- `GET /api/payments/[id]`
+
+### Administration
+- `GET /api/admin/overview`
+- `GET /api/admin/exposure`
+- `GET /api/admin/reports`
+
+### Operations
+- `GET /api/operations/exceptions`
+- `POST /api/operations/decisions`
+
+Use appropriate HTTP status codes, request validation and consistent JSON responses.
+
+Do not put the entire business logic inside the API route handlers.
+
+Route handlers must call dedicated service functions.
+
+---
+
+## 18. PROJECT STRUCTURE
+
+Organize the codebase professionally.
+
+Suggested structure:
+
+```text
+src/
+├── app/
+│   ├── (public)/
+│   ├── (auth)/
+│   ├── (farmer)/
+│   ├── admin/
+│   ├── operations/
+│   └── api/
+│
+├── components/
+│   ├── ui/
+│   ├── layout/
+│   ├── dashboard/
+│   ├── insurance/
+│   ├── climate/
+│   ├── payments/
+│   └── shared/
+│
+├── services/
+│   ├── insurance/
+│   ├── risk/
+│   ├── premium/
+│   ├── climate/
+│   ├── monitoring/
+│   ├── triggers/
+│   ├── indemnities/
+│   ├── payments/
+│   └── audit/
+│
+├── lib/
+│   ├── supabase/
+│   ├── auth/
+│   ├── validation/
+│   ├── security/
+│   └── utils/
+│
+├── types/
+├── hooks/
+└── config/
+
+supabase/
+├── migrations/
+└── seed.sql
+
+docs/
+├── README.md
+├── ARCHITECTURE.md
+├── DATABASE.md
+├── API.md
+├── AUTHENTICATION.md
+├── SECURITY.md
+├── BUSINESS_RULES.md
+├── INSURANCE_ENGINE.md
+├── CLIMATE_DATA.md
+├── DATA_QUALITY.md
+├── BASIS_RISK.md
+├── PAYMENTS.md
+├── AUDIT.md
+├── TESTING.md
+├── DEPLOYMENT.md
+├── ENVIRONMENT.md
+├── LICENSES_AND_DEPENDENCIES.md
+└── ROADMAP.md
+```
+
+Adapt the structure if necessary, but preserve clear separation of responsibilities.
+
+---
+
+## 19. DOCUMENTATION REQUIREMENTS
+
+Documentation is mandatory.
+
+Do not create empty Markdown files or documentation containing only generic descriptions.
+
+Every important module must have meaningful technical documentation.
+
+### README.md
+
+The main README must explain:
+- Project overview.
+- Problem being solved.
+- Main features.
+- Technology stack.
+- System requirements.
+- Installation.
+- Environment configuration.
+- Supabase setup.
+- Database migrations.
+- Development commands.
+- Testing.
+- Deployment.
+- Documentation index.
+
+### ARCHITECTURE.md
+
+Document:
+- System architecture.
+- Frontend structure.
+- Backend structure.
+- Service responsibilities.
+- Data flow.
+- External integrations.
+- Architectural decisions.
+
+### DATABASE.md
+
+Document:
+- Database entities.
+- Relationships.
+- Table descriptions.
+- Constraints.
+- Indexes.
+- RLS policies.
+- Migration instructions.
+
+### API.md
+
+Document every endpoint:
+- HTTP method.
+- Route.
+- Purpose.
+- Authentication requirements.
+- Required role.
+- Request body.
+- Response structure.
+- Error responses.
+- Example requests.
+
+### BUSINESS_RULES.md
+
+Document:
+- Insurance eligibility.
+- Insurance product configuration.
+- Coverage rules.
+- Premium calculation.
+- Trigger conditions.
+- Indemnity calculation.
+- Payment rules.
+- Exception handling.
+
+Include mathematical formulas and worked examples.
+
+### CLIMATE_DATA.md
+
+Document:
+- Integrated providers.
+- API endpoints.
+- Data variables.
+- Units.
+- Geographic resolution.
+- Temporal resolution.
+- Data retrieval.
+- Data normalization.
+- Limitations.
+- Attribution and terms of use.
+
+Clearly distinguish implemented integrations from planned integrations.
+
+### DATA_QUALITY.md
+
+Document:
+- Data validation.
+- Missing data.
+- Duplicate observations.
+- Source disagreement.
+- Data delays.
+- Minimum quality criteria.
+- Manual review process.
+
+### BASIS_RISK.md
+
+Document:
+- Definition of basis risk.
+- False positives.
+- False negatives.
+- Historical testing methodology.
+- Risk mitigation strategies.
+- Limitations of the MVP.
+
+### SECURITY.md
+
+Document:
+- Authentication.
+- Authorization.
+- RLS.
+- Role permissions.
+- Secrets management.
+- Audit logs.
+- Security limitations.
+
+### TESTING.md
+
+Document:
+- Unit tests.
+- API tests.
+- Integration tests.
+- End-to-end tests.
+- Insurance scenarios.
+- Climate failure scenarios.
+- Duplicate event tests.
+- Payment failure tests.
+
+### DEPLOYMENT.md
+
+Document:
+- Production requirements.
+- Supabase configuration.
+- Hosting configuration.
+- Environment variables.
+- Database migrations.
+- Deployment process.
+- Scheduled monitoring configuration.
+
+### LICENSES_AND_DEPENDENCIES.md
+
+List:
+- Third-party packages.
+- Package versions.
+- Licenses.
+- External services.
+- API terms.
+- Estimated costs.
+- Known restrictions.
+
+Keep the documentation updated as the implementation evolves.
+
+---
+
+## 20. TEST DATA AND DEMONSTRATION
+
+Create a seed system with clearly identified fictional data.
+
+Include:
+- 10 fictional farmers.
+- 10 agricultural properties.
+- At least 2 crop types.
+- At least 2 insurance products.
+- 10 sample policies.
+- Climate observations for multiple scenarios.
+- Activated and non-activated events.
+- Successful and failed simulated payments.
+- Operational exceptions.
+
+Include test users for:
+- Farmer.
+- Manager.
+- Operator.
+
+Never use real personal information.
+
+Test accounts must be created through a documented development seeding process, not by exposing production credentials.
+
+---
+
+## 21. REQUIRED END-TO-END DEMONSTRATIONS
+
+The application must successfully demonstrate the following scenarios:
+
+1. Register a fictional farmer.
+2. Register an agricultural property.
+3. Simulate insurance coverage.
+4. Calculate and explain the premium.
+5. Accept the insurance conditions.
+6. Simulate premium payment.
+7. Generate and consult a digital policy.
+8. Retrieve external precipitation data.
+9. Demonstrate a scenario without trigger activation.
+10. Demonstrate a scenario with trigger activation.
+11. Calculate indemnity automatically.
+12. Simulate an indemnity payment.
+13. Notify the farmer.
+14. Display event evidence in the manager dashboard.
+15. Demonstrate insufficient climate data.
+16. Demonstrate duplicate event prevention.
+17. Demonstrate disagreement between two data sources.
+18. Demonstrate manual exception handling.
+19. Consult the complete audit history.
+
+These scenarios must be executable, not merely represented by static screenshots.
+
+---
+
+## 22. DEVELOPMENT PRIORITIES
+
+Prioritize a complete functional vertical slice.
+
+### P0 — Essential MVP
+- Authentication.
+- Role management.
+- Farmer registration.
+- Agricultural property registration.
+- Insurance products.
+- Insurance simulator.
+- Premium calculation.
+- Policy creation.
+- External climate data integration.
+- Data quality validation.
+- Trigger detection.
+- Indemnity calculation.
+- Simulated payments.
+- Audit logs.
+- Manager and operator dashboards.
+
+### P1 — Important
+- Historical climate analysis.
+- Multiple source comparison.
+- Advanced reports.
+- Policy PDF generation.
+- Notifications.
+- Advanced operational tools.
+
+### P2 — Future development
+- Real payment integrations.
+- WhatsApp notifications.
+- Mobile application.
+- Institutional INAMET integration.
+- Institutional GGPEN integration.
+- Advanced actuarial modelling.
+- Additional crops and geographical regions.
+
+Do not sacrifice P0 functionality to implement decorative P1 or P2 features.
+
+---
+
+## 23. IMPLEMENTATION INSTRUCTIONS
+
+Follow this development sequence:
+
+### Phase 1 — Foundation
+- Initialize Next.js.
+- Configure TypeScript and Tailwind.
+- Configure Supabase.
+- Establish the database schema.
+- Implement authentication.
+- Implement roles and permissions.
+
+### Phase 2 — Core application
+- Build the shared design system.
+- Build public pages.
+- Build farmer portal.
+- Build manager dashboard.
+- Build operator dashboard.
+
+### Phase 3 — Insurance engine
+- Implement products.
+- Implement insurance rules.
+- Implement premium calculations.
+- Implement simulations.
+- Implement policies.
+
+### Phase 4 — Climate engine
+- Implement external providers.
+- Implement data normalization.
+- Implement data validation.
+- Implement source comparison.
+- Implement monitoring.
+
+### Phase 5 — Events and payments
+- Implement trigger engine.
+- Implement indemnity engine.
+- Implement exception management.
+- Implement payment simulation.
+- Implement notifications.
+
+### Phase 6 — Quality and documentation
+- Implement audit logs.
+- Apply security policies.
+- Execute all required scenarios.
+- Fix critical errors.
+- Complete documentation.
+- Prepare demonstration accounts.
+
+Do not stop after generating the frontend.
+
+Implement the database, API routes, business logic and integration.
+
+---
+
+## 24. FINAL ACCEPTANCE CRITERIA
+
+The MVP is considered complete only when:
+
+- All three roles can authenticate and access their respective interfaces.
+- Farmers can register agricultural properties.
+- Insurance simulations produce backend-calculated results.
+- Managers can configure insurance products and rules.
+- Customers can subscribe and receive policies.
+- At least one real external climate data source is integrated.
+- A second source can be used for comparison.
+- Data quality is validated before triggering payments.
+- Climate events are detected according to contractual rules.
+- Indemnities are calculated automatically and explainably.
+- Payments can be simulated.
+- Duplicate events cannot generate duplicate indemnities.
+- Insufficient data cannot trigger automatic payment.
+- Operators can investigate exceptions.
+- Important actions are recorded in audit logs.
+- Supabase RLS protects user data.
+- All required documentation exists and reflects the actual implementation.
+- The application can be installed and executed using the README instructions.
+
+**Final instruction:**
+
+Build a professional, maintainable and demonstrable agricultural parametric insurance MVP.
+
+Prioritize functional completeness, transparent calculations, reliable climate data handling, security and auditability.
+
+Keep the interface visually simple and elegant. Avoid unnecessary complexity in both the design and architecture.
+
+Make reasonable implementation decisions independently, document them and avoid asking for approval for every minor detail.
+
+If an external service requires credentials that are not available, create a documented provider adapter and an explicitly labelled demonstration mode. Never fabricate real integrations, data or successful financial transactions.
+
+The final result must be a working software product with complete source code, Supabase integration, Next.js APIs, database migrations, automated tests and organized technical documentation.
+
+
+---
+
+## 25. CODE ORGANIZATION, COMPONENTIZATION AND PORTUGUESE COMMENTS
+
+This project must follow professional software engineering practices. **Do not concentrate large amounts of code, business logic, UI markup or multiple unrelated responsibilities in a single file.**
+
+The application must be organized into small, reusable, independently understandable modules.
+
+### Componentization rules
+
+- Create separate React components for each meaningful interface element or functional section.
+- Do not build entire pages as one large component.
+- Keep page files focused on composing components and loading the data required by the page.
+- Extract repeated interface patterns into reusable components.
+- Separate layout components, form components, tables, charts, dialogs, navigation and status indicators.
+- Split complex forms into smaller components or steps.
+- Split complex dashboards into independent sections and widgets.
+- Use shared components only when they represent genuinely reusable functionality.
+- Avoid creating one generic component with dozens of unrelated conditions and props.
+- Keep components focused on a single responsibility.
+- Prefer composition over deeply nested conditional rendering.
+- Keep component files reasonably small and readable. When a file becomes difficult to understand, maintain or test, split it into smaller modules.
+
+### Separation of responsibilities
+
+Maintain a clear separation between:
+
+1. **Pages:** route-level composition and page orchestration.
+2. **UI components:** visual elements and user interaction.
+3. **Hooks:** reusable client-side state and interaction logic.
+4. **API Route Handlers:** HTTP request handling, validation and response formatting.
+5. **Services:** business rules and application use cases.
+6. **Repositories/data access:** database queries and persistence logic, where this abstraction is useful.
+7. **Schemas:** Zod validation schemas.
+8. **Types:** shared TypeScript types and interfaces.
+9. **Utilities:** small reusable helper functions.
+10. **Configuration:** application settings and constants.
+
+Do not put database queries, insurance calculations or complex business rules directly inside React components.
+
+Do not put all business logic inside API route handlers.
+
+Do not create unnecessarily large files containing multiple unrelated components, services, schemas or functions.
+
+### Suggested component organization
+
+Use feature-based folders where appropriate. For example:
+
+```text
+src/
+├── components/
+│   ├── ui/
+│   │   ├── button.tsx
+│   │   ├── input.tsx
+│   │   ├── dialog.tsx
+│   │   └── status-badge.tsx
+│   │
+│   ├── layout/
+│   │   ├── app-sidebar.tsx
+│   │   ├── app-header.tsx
+│   │   └── dashboard-shell.tsx
+│   │
+│   └── features/
+│       ├── insurance/
+│       │   ├── simulator-form.tsx
+│       │   ├── coverage-summary.tsx
+│       │   ├── premium-breakdown.tsx
+│       │   └── policy-card.tsx
+│       │
+│       ├── climate/
+│       │   ├── precipitation-chart.tsx
+│       │   ├── climate-status.tsx
+│       │   └── source-comparison.tsx
+│       │
+│       ├── farms/
+│       │   ├── farm-form.tsx
+│       │   ├── farm-list.tsx
+│       │   └── farm-location-picker.tsx
+│       │
+│       ├── payments/
+│       │   ├── payment-status.tsx
+│       │   └── payment-history-table.tsx
+│       │
+│       └── dashboard/
+│           ├── overview-metrics.tsx
+│           ├── recent-events.tsx
+│           └── exposure-chart.tsx
+```
+
+This is an organizational example. Adapt it to the actual application without duplicating components or creating unnecessary abstractions.
+
+### Portuguese comments and code documentation
+
+All explanatory code comments must be written in **clear, detailed Portuguese**.
+
+Comments must explain:
+- The purpose of a module or complex function.
+- Why a non-obvious technical decision was made.
+- Important business rules.
+- Calculation assumptions and limitations.
+- Security-sensitive operations.
+- External API integration behaviour.
+- Error handling and exceptional cases.
+- Important data transformations.
+- Non-obvious dependencies between modules.
+
+Use detailed Portuguese documentation for complex functions and services, preferably with TSDoc/JSDoc-style comments.
+
+Example:
+
+```ts
+/**
+ * Calcula o valor da indemnização com base nas regras
+ * contratuais da apólice e na severidade do evento climático.
+ *
+ * O cálculo é executado exclusivamente no servidor para impedir
+ * que o cliente altere o valor da indemnização através do frontend.
+ *
+ * O resultado nunca pode ultrapassar o capital segurado nem
+ * os limites máximos definidos na versão da apólice.
+ *
+ * @param input Dados da apólice, precipitação observada e regras aplicáveis.
+ * @returns Resultado detalhado do cálculo e respectiva justificação.
+ */
+export async function calculateIndemnity(input: IndemnityInput) {
+  // Implementar validação e cálculo no serviço de indemnizações.
+}
+```
+
+Do not add comments that merely repeat what an obvious line of code already says.
+
+Use descriptive names for variables, functions, components, types and files. Avoid vague names such as `data`, `item`, `process`, `helper` or `utils` when a more precise name is possible.
+
+### TypeScript quality
+
+- Avoid `any`; use explicit types, interfaces, generics or `unknown` with proper validation.
+- Avoid unnecessary type assertions.
+- Define shared domain types in organized files.
+- Validate external API responses at runtime.
+- Use strict TypeScript settings.
+- Avoid duplicated type definitions.
+- Keep types aligned with the actual database schema.
+
+### React and Next.js best practices
+
+- Use Server Components by default.
+- Use Client Components only when browser interaction, local state or client-side hooks are necessary.
+- Keep the `"use client"` boundary as low in the component tree as possible.
+- Do not turn an entire page into a Client Component without a clear reason.
+- Use Server Actions only when appropriate; preserve the required Next.js API architecture for the platform's REST endpoints.
+- Avoid prop drilling when a small, well-scoped context or composition can solve the problem.
+- Avoid unnecessary global state.
+- Use loading, error and empty states consistently.
+- Use stable keys when rendering lists.
+- Avoid duplicated API requests and unnecessary re-renders.
+- Follow accessible HTML semantics and keyboard navigation practices.
+
+### Maintainability and testing
+
+- Make business services independently testable.
+- Create unit tests for premium, risk, trigger and indemnity calculations.
+- Test reusable components where their behaviour is important.
+- Keep API validation schemas separate from route handlers.
+- Avoid circular dependencies.
+- Avoid duplicated business logic.
+- Refactor files that become too large or difficult to maintain.
+- Ensure that each module has a clear responsibility and can be understood without reading the entire application.
+
+**Mandatory final requirement:** Before considering the project complete, review the codebase for oversized files, components with multiple responsibilities, duplicated logic and poorly separated concerns. Refactor them into well-named components and modules. The final code must be easy for another developer to read, understand, test and extend.
+
+All explanatory comments and technical documentation must be written in Portuguese. Keep identifiers in English where that improves consistency with common programming conventions, but explain important implementation decisions in Portuguese.

@@ -1,0 +1,46 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (ignora .env, .env.local, .env.*.local, mas mantém o modelo .env.example no repositório)
+.env*
+!.env.example
+
+# supabase local cli / caches temporárias
+.supabase/
+tmp/
+
+# tests & coverage
+/coverage
+playwright-report/
+test-results/
+
+# logs & certificados
+*.log
+*.pem
+*.key
+
+# sistema operativo
+.DS_Store
+Thumbs.db
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
