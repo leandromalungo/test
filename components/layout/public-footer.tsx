@@ -1,35 +1,43 @@
 import Link from 'next/link'
+import { BrandMark } from '@/components/layout/brand-mark'
 
 /**
- * Rodapé institucional silencioso com ligações legais e contexto do mercado angolano.
+ * Rodapé institucional único importado pelas páginas públicas e pela página de apresentação.
  */
 export function PublicFooter() {
   return (
-    <footer className="border-t border-[#E5E7EB] bg-[#F8F9FA]">
-      <div className="mx-auto flex max-w-6xl flex-col justify-between gap-6 px-6 py-10 md:flex-row md:items-center">
+    <footer className="border-t border-[#E5E7EB] bg-white">
+      <div className="mx-auto flex max-w-[1200px] flex-col justify-between gap-6 px-4 py-10 sm:px-6 md:flex-row md:items-center lg:px-8">
         <div>
-          <p className="text-sm font-semibold text-[#171717]">
-            NOSSA AgroParamétrico
-          </p>
-          <p className="mt-1 text-xs text-[#737373]">
-            Plataforma de Seguro Agrícola Paramétrico · Mercado Angolano · Ambiente MVP Demonstrativo
+          <BrandMark href="/#inicio" tone="dark" />
+          <p className="mt-2 text-xs text-[#6B7280]">
+            Seguro Agrícola Paramétrico · Mercado Angolano · Dados Open-Meteo ERA5 &amp; NASA POWER
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-6 text-xs text-[#737373]">
-          <Link href="/products" className="hover:text-[#171717]">
-            Produtos
+        <div className="flex flex-wrap items-center gap-5 text-xs font-medium text-[#525252]">
+          <a href="/#sobre" className="transition-colors hover:text-[#0D1526]">
+            Sobre Nós
+          </a>
+          <a href="/#solucoes" className="transition-colors hover:text-[#0D1526]">
+            Soluções
+          </a>
+          <a href="/#beneficios" className="transition-colors hover:text-[#0D1526]">
+            Benefícios
+          </a>
+          <Link href="/login" className="transition-colors hover:text-[#0D1526]">
+            Portal do Agricultor
           </Link>
-          <Link href="/how-it-works" className="hover:text-[#171717]">
-            Como Funciona
+          <Link href="/admin/login" className="transition-colors hover:text-[#0D1526]">
+            Gestor
           </Link>
-          <Link href="/terms" className="hover:text-[#171717]">
-            Condições Contratuais
+          <Link href="/operations/login" className="transition-colors hover:text-[#0D1526]">
+            Operador
           </Link>
-          <Link href="/privacy" className="hover:text-[#171717]">
-            Política de Privacidade
+          <Link href="/terms" className="transition-colors hover:text-[#0D1526]">
+            Termos
           </Link>
-          <Link href="/register" className="hover:text-[#171717]">
-            Criar Conta
+          <Link href="/privacy" className="transition-colors hover:text-[#0D1526]">
+            Privacidade
           </Link>
         </div>
       </div>

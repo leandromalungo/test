@@ -28,6 +28,7 @@ import {
   Users,
   X,
 } from 'lucide-react'
+import { BrandMark } from '@/components/layout/brand-mark'
 import { cn } from '@/lib/utils'
 import type { UserProfile, UserRole } from '@/types/domain'
 
@@ -137,14 +138,8 @@ export function PortalShell({ user, authMode, children }: PortalShellProps) {
   const sidebarContent = (
     <div className="flex h-full flex-col justify-between bg-[#F8F9FA] px-3 py-5">
       <div>
-        <div className="px-3 pb-5">
-          <Link
-            href="/"
-            className="block text-sm font-bold tracking-tight text-[#171717]"
-          >
-            NOSSA AgroParamétrico
-          </Link>
-          <p className="mt-1 text-xs text-[#737373]">{ROLE_TITLE[user.role]}</p>
+        <div className="px-2 pb-5">
+          <BrandMark href="/" tone="dark" subtitle={ROLE_TITLE[user.role]} />
         </div>
 
         <nav aria-label="Menu do portal" className="space-y-0.5">
