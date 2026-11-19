@@ -1,25 +1,29 @@
-import { PublicNavbar } from '@/components/layout/public-navbar'
-import { PublicFooter } from '@/components/layout/public-footer'
+import type { Metadata } from 'next'
+import { PublicAuthSplit } from '@/components/features/auth/public-auth-split'
 import { RegisterForm } from '@/components/features/auth/register-form'
 
+export const metadata: Metadata = {
+  title: 'Criar Conta | NOSSA AgroParamétrico',
+  description: 'Registo de produtores agrícolas e cooperativas na plataforma NOSSA AgroParamétrico.',
+}
+
+/**
+ * Página de registo de novos agricultores (`/register`).
+ */
 export default function RegisterPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-white">
-      <PublicNavbar />
-      <main className="flex flex-1 items-center justify-center px-6 py-12">
-        <div className="w-full max-w-lg rounded-lg border border-[#E5E7EB] bg-white p-6 sm:p-8">
-          <div className="mb-6">
-            <h1 className="text-2xl font-semibold tracking-tight text-[#171717]">
-              Registo de Produtor Agrícola
-            </h1>
-            <p className="mt-1.5 text-sm text-[#737373]">
-              Crie a sua conta para georreferenciar lavras, simular prémios e subscrever coberturas paramétricas.
-            </p>
-          </div>
-          <RegisterForm />
-        </div>
-      </main>
-      <PublicFooter />
-    </div>
+    <PublicAuthSplit
+      badgeLabel="Junte-se a Nós"
+      heroTitle="Comece a Sua Jornada"
+      heroSubtitle="Siga estes passos simples para configurar a sua conta de produtor agrícola."
+      steps={[
+        { number: '1', label: 'Registar a sua conta', active: true },
+        { number: '2', label: 'Configurar a sua propriedade' },
+        { number: '3', label: 'Simular e emitir apólice' },
+      ]}
+      formTitle="Criar Conta"
+    >
+      <RegisterForm />
+    </PublicAuthSplit>
   )
 }

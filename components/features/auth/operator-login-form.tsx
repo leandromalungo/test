@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { KeyRound, Loader2, ShieldAlert } from 'lucide-react'
+import { Check, Eye, EyeOff, KeyRound, Loader2 } from 'lucide-react'
 
 interface OperatorLoginFormProps {
   demonstrationMode: boolean
@@ -16,8 +16,11 @@ export function OperatorLoginForm({ demonstrationMode }: OperatorLoginFormProps)
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
 
   async function authenticateOperator(targetEmail: string, targetPassword: string) {
     const cleanEmail = targetEmail.trim().toLowerCase()
@@ -58,60 +61,80 @@ export function OperatorLoginForm({ demonstrationMode }: OperatorLoginFormProps)
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-2 rounded-md border border-[#FDE68A] bg-[#FFFBEB] px-3 py-2 text-xs font-medium text-[#B45309]">
-        <ShieldAlert className="h-4 w-4 shrink-0" aria-hidden="true" />
-        <span>Acesso exclusivo para Operadores de Qualidade e Tratamento de Excepções</span>
-      </div>
-
+    <div className="space-y-5">
       <form onSubmit={handleOperatorSubmit} noValidate className="space-y-4">
         <div className="space-y-1.5">
           <label
             htmlFor="operator-login-email"
-            className="block text-sm font-medium text-[#171717]"
+            className="block text-[12px] font-medium text-[#171717]"
           >
             E-mail Operacional
           </label>
-          <input
-            id="operator-login-email"
-            name="email"
-            type="email"
-            required
-            maxLength={254}
-            autoComplete="username"
-            placeholder="operador@nossa.ao"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="flex h-10 w-full rounded-md border border-[#E5E7EB] bg-white px-3 text-sm text-[#171717] placeholder:text-[#A3A3A3] focus:border-[#D97706] focus:outline-none focus:ring-2 focus:ring-[#D97706]/20"
-          />
+          <div className="relative">
+            <input
+              id="operator-login-email"
+              name="email"
+              type="email"
+              required
+              maxLength={254}
+              autoComplete="username"
+              placeholder="operador@nossa.ao"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="flex h-11 w-full rounded-xl border border-transparent bg-[#F4F5F7] px-3.5 pr-10 text-sm text-[#0D1526] placeholder:text-[#9CA3AF] transition-colors focus:border-[#1D4ED8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1D4ED8]/15"
+            />
+            {emailValid && (
+              <Check
+                className="pointer-events-none absolute top-1/2 right-3.5 h-4 w-4 -translate-y-1/2 text-[#16A34A]"
+                aria-hidden="true"
+              />
+            )}
+          </div>
         </div>
 
         <div className="space-y-1.5">
           <label
             htmlFor="operator-login-password"
-            className="block text-sm font-medium text-[#171717]"
+            className="block text-[12px] font-medium text-[#171717]"
           >
-            Palavra-passe
+            Palavra-passe Operacional
           </label>
-          <input
-            id="operator-login-password"
-            name="password"
-            type="password"
-            required
-            minLength={8}
-            maxLength={128}
-            autoComplete="current-password"
-            placeholder="••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="flex h-10 w-full rounded-md border border-[#E5E7EB] bg-white px-3 text-sm text-[#171717] placeholder:text-[#A3A3A3] focus:border-[#D97706] focus:outline-none focus:ring-2 focus:ring-[#D97706]/20"
-          />
+          <div className="relative">
+            <input
+              id="operator-login-password"
+              name="password"
+              type={showPassword ? 'text' : 'password'}
+              required
+              minLength={8}
+              maxLength={128}
+              autoComplete="current-password"
+              placeholder="••••••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="flex h-11 w-full rounded-xl border border-transparent bg-[#F4F5F7] px-3.5 pr-10 text-sm text-[#0D1526] placeholder:text-[#9CA3AF] transition-colors focus:border-[#1D4ED8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1D4ED8]/15"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              aria-label={showPassword ? 'Ocultar palavra-passe' : 'Mostrar palavra-passe'}
+              className="absolute top-1/2 right-3 -translate-y-1/2 text-[#6B7280] hover:text-[#0D1526]"
+            >
+              {showPassword ? (
+                <EyeOff className="h-4 w-4" aria-hidden="true" />
+              ) : (
+                <Eye className="h-4 w-4" aria-hidden="true" />
+              )}
+            </button>
+          </div>
+          <p className="text-[11px] leading-relaxed text-[#6B7280]">
+            Acesso restrito para auditoria climática, validação de fontes e resolução de excepções.
+          </p>
         </div>
 
         {error && (
           <div
             role="alert"
-            className="rounded-md border border-[#FECACA] bg-[#FEF2F2] px-3 py-2 text-sm text-[#B91C1C]"
+            className="rounded-xl border border-[#FECACA] bg-[#FEF2F2] px-3.5 py-2.5 text-xs font-medium text-[#B91C1C]"
           >
             {error}
           </div>
@@ -120,19 +143,22 @@ export function OperatorLoginForm({ demonstrationMode }: OperatorLoginFormProps)
         <button
           type="submit"
           disabled={loading}
-          className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md bg-[#B45309] px-4 text-sm font-medium text-white transition-colors hover:bg-[#92400E] disabled:opacity-50"
+          className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#1D4ED8] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#1E40AF] disabled:opacity-50"
         >
           {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-          <span>{loading ? 'A validar credenciais...' : 'Aceder às Operações'}</span>
+          <span>{loading ? 'A validar credenciais...' : 'Continuar'}</span>
         </button>
       </form>
 
       {demonstrationMode && (
-        <div className="border-t border-[#E5E7EB] pt-5">
-          <div className="mb-2.5 flex items-center gap-2 text-xs font-semibold text-[#737373]">
-            <KeyRound className="h-3.5 w-3.5" aria-hidden="true" />
-            <span>Conta de Demonstração (Operador)</span>
+        <>
+          <div className="relative flex items-center justify-center">
+            <span className="h-px w-full bg-[#E5E7EB]" aria-hidden="true" />
+            <span className="bg-white px-3 text-[11px] font-medium text-[#9CA3AF]">
+              Ou
+            </span>
           </div>
+
           <button
             type="button"
             disabled={loading}
@@ -141,21 +167,12 @@ export function OperatorLoginForm({ demonstrationMode }: OperatorLoginFormProps)
               setPassword('Demo@2026')
               void authenticateOperator('operador@nossa.demo.ao', 'Demo@2026')
             }}
-            className="flex w-full items-center justify-between gap-3 rounded-md border border-[#E5E7EB] bg-[#F8F9FA] px-3.5 py-2.5 text-left transition-colors hover:border-[#D97706] hover:bg-white disabled:opacity-50"
+            className="flex h-11 w-full items-center justify-center gap-2.5 rounded-xl border border-[#E5E7EB] bg-white px-4 text-xs font-semibold text-[#0D1526] transition-colors hover:border-[#1D4ED8] hover:bg-[#F8FAFC] disabled:opacity-50"
           >
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-[#171717]">
-                António Sebastião Neto
-              </p>
-              <p className="truncate font-mono text-xs text-[#737373]">
-                operador@nossa.demo.ao · Demo@2026
-              </p>
-            </div>
-            <span className="shrink-0 text-xs font-medium text-[#B45309]">
-              Entrar
-            </span>
+            <KeyRound className="h-4 w-4 text-[#1D4ED8]" aria-hidden="true" />
+            <span>Entrar com Conta Demo · António Neto</span>
           </button>
-        </div>
+        </>
       )}
     </div>
   )
